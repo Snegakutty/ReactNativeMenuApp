@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub API Test Panel (ID-Based)</title>
+    <style>
+        /* (CSS is unchanged, omitted for brevity) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #1a535c;
+        }
+        h1 { text-align: center; }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1.5fr;
+            gap: 20px;
+            max-width: 1600px;
+            margin: 20px auto;
+        }
+        .column {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            min-height: 400px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        input[type="text"], input[type="number"], select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button, .btn {
+            background-color: #1a535c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        button:hover, .btn:hover { background-color: #4ecdc4; }
+        .btn-delete { background-color: #ff6b6b; }
+        .btn-delete:hover { background-color: #e05252; }
+        .btn-update { background-color: #fca11a; }
+        .btn-update:hover { background-color: #e08e17; }
+        .btn-select { background-color: #007bff; }
+        .btn-select:hover { background-color: #0056b3; }
+        
+        .list-item {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+        .list-item h4 { margin: 0 0 10px 0; }
+        .list-item-details {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .list-item-addons {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        .list-item-addons strong { color: #1a535c; }
+        .addon-tag {
+            display: inline-block;
+            background-color: #e0f2f1;
+            color: #00796b;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin: 2px;
+        }
+        .list-item-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .column-header {
+            border-bottom: 2px solid #4ecdc4;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        #global-addon-manager {
+            grid-column: 1 / -1;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto 20px auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        #global-addon-manager h2 {
+            grid-column: 1 / -1;
+            margin-top: 0;
+            border-bottom: 2px solid #fca11a;
+            padding-bottom: 10px;
+        }
+        #global-addon-manager form {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        #global-addon-manager .form-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        #global-addon-list-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>FoodHub API Test Panel (ID-Based)</h1>
+
+    <div id="global-addon-manager">
+        <h2>Global Addon Management</h2>
+        
+        <div class="form-column">
+            <form id="global-create-addon-form">
+                <h3>Create Global Addon</h3>
+                <input type="text" id="global-create-name" placeholder="Addon Name" required>
+                <input type="number" id="global-create-price" placeholder="Price" step="0.01" required>
+                <button type="submit">Create</button>
+            </form>
+            
+            <form id="update-addon-form">
+                <h3>Update Global Addon</h3>
+                <input type="number" id="global-addon-id" placeholder="Addon ID" required>
+                <input type="text" id="global-addon-name" placeholder="New Name (optional)">
+                <input type="number" id="global-addon-price" placeholder="New Price (optional)" step="0.01">
+                <button type="submit" class="btn-update">Update</button>
+            </form>
+        </div>
+
+        <div class="list-column">
+            <h3>All Addons in Database</h3>
+            <button id="load-all-addons-btn" style="width: 100%; margin-bottom: 15px;">Load/Refresh All Addons</button>
+            <div id="global-addon-list-container">
+                <p>Click the button to load addons...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="column">
+            <h2 class="column-header">1. Categories</h2>
+            <form id="create-category-form">
+                <h3>Create Category</h3>
+                <input type="text" id="category-name-input" placeholder="Category Name" required>
+                <button type="submit">Create Category</button>
+            </form>
+            <button id="load-categories-btn" style="width: 100%; margin-bottom: 20px;">Load All Categories</button>
+            <div id="categories-list"></div>
+        </div>
+
+        <div class="column">
+            <h2 class="column-header">2. Items</h2>
+            <h3 id="items-header">Select a Category to see items</h3>
+            <form id="create-item-form" style="display: none;">
+                <h3>Create New Item</h3>
+                <input type="text" id="item-name" placeholder="Item Name" required>
+                <input type="number" id="item-price" placeholder="Price" step="0.01" required>
+                <select id="item-veg-type">
+                    <option value="veg">Veg</option>
+                    <option value="non-veg">Non-Veg</option>
+                </select>
+                <input type="text" id="item-size" placeholder="Size (e.g., Medium, 12 inch)">
+                <input type="number" id="item-prep-time" placeholder="Prep Time (mins)">
+                <div>
+                    <input type="checkbox" id="item-bestseller" style="width: auto;">
+                    <label for="item-bestseller">Is Bestseller?</label>
+                </div>
+                <button type="submit">Create Item</button>
+            </form>
+            <div id="items-list"></div>
+        </div>
+
+        <div class="column">
+            <h2 class="column-header">3. Item-Specific Addons</h2>
+            <h3 id="addons-header">Select an Item to see addons</h3>
+            
+            <form id="add-addon-form" style="display: none;">
+                <h3>Add/Link Addon to Item</h3>
+                <div>
+                    <label for="addon-name">Addon Name</label>
+                    <input type="text" id="addon-name" placeholder="e.g., Extra Cheese" required>
+                </div>
+                
+                <div id="addon-price-container">
+                    <label for="addon-price">Addon Price (if new)</label>
+                    <input type="number" id="addon-price" placeholder="Addon Price" step="0.01" required>
+                </div>
+
+                <p id="addon-helper-text" style="font-size: 13px; margin: -5px 0 5px 0; min-height: 1.2em;"></p>
+                <button type="submit">Add/Link Addon</button>
+            </form>
+            <div id="addons-list"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_BASE = 'http://localhost:3000';
+
+            // State
+            let currentCategoryId = null; // <-- MODIFIED
+            let currentCategoryName = null;
+            let currentItemId = null; // <-- MODIFIED
+            let currentItemName = null;
+            let globalAddonCache = new Map();
+
+            // --- Element Refs ---
+            const categoriesList = document.getElementById('categories-list');
+            const itemsList = document.getElementById('items-list');
+            const addonsList = document.getElementById('addons-list');
+            const globalAddonListContainer = document.getElementById('global-addon-list-container');
+            
+            const itemsHeader = document.getElementById('items-header');
+            const addonsHeader = document.getElementById('addons-header');
+            
+            const createItemForm = document.getElementById('create-item-form');
+            const addAddonForm = document.getElementById('add-addon-form');
+
+            const addonNameInput = document.getElementById('addon-name');
+            const addonPriceInput = document.getElementById('addon-price');
+            const addonPriceContainer = document.getElementById('addon-price-container');
+            const addonHelperText = document.getElementById('addon-helper-text');
+
+            // --- Helper: API Fetch ---
+            async function api(url, options = {}) {
+                try {
+                    const response = await fetch(`${API_BASE}${url}`, options);
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => response.text());
+                        let errorMsg = `HTTP ${response.status}`;
+                        if (typeof errorData === 'string') {
+                            errorMsg += `: ${errorData}`;
+                        } else if (errorData.message) {
+                            errorMsg += `: ${errorData.message}`;
+                            if (errorData.errors) {
+                                errorMsg += ` (${errorData.errors.map(e => e.message).join(', ')})`;
+                            }
+                        }
+                        throw new Error(errorMsg);
+                    }
+                    if (response.status === 204 || response.headers.get('content-length') === '0') {
+                        return null; 
+                    }
+                    return await response.json();
+                } catch (err) {
+                    console.error('API Error:', err);
+                    alert(`Error: ${err.message}`);
+                    throw err;
+                }
+            }
+            
+            // --- Helper: Render Functions ---
+            
+            // MODIFIED: Added data-id
+            function renderCategories(categories) {
+                categoriesList.innerHTML = '';
+                if (!categories || categories.length === 0) {
+                    categoriesList.innerHTML = '<p>No categories found.</p>';
+                    return;
+                }
+                categories.forEach(cat => {
+                    const el = document.createElement('div');
+                    el.className = 'list-item';
+                    el.innerHTML = `
+                        <h4>${cat.name} (ID: ${cat.id})</h4>
+                        <div class="list-item-actions">
+                            <button class="btn btn-select" data-id="${cat.id}" data-name="${cat.name}">Select</button>
+                            <button class="btn btn-update" data-id="${cat.id}" data-name="${cat.name}">Update Name</button>
+                            <button class="btn btn-delete" data-id="${cat.id}" data-name="${cat.name}">Delete</button>
+                        </div>
+                    `;
+                    categoriesList.appendChild(el);
+                });
+            }
+
+            // MODIFIED: Added data-id
+            function renderItems(items) {
+                itemsList.innerHTML = '';
+                if (!items || items.length === 0) {
+                    itemsList.innerHTML = '<p>No items found for this category.</p>';
+                    return;
+                }
+                items.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'list-item';
+                    const addonsHtml = (item.addons && item.addons.length > 0)
+                        ? item.addons.map(a => `<span class="addon-tag">${a.name} ($${a.price})</span>`).join(' ')
+                        : '<em>None</em>';
+                    
+                    el.innerHTML = `
+                        <h4>${item.name} (ID: ${item.id})</h4>
+                        <div class="list-item-details">
+                            <strong>Price:</strong> $${item.price}<br>
+                            <strong>Type:</strong> ${item.veg_type}<br>
+                            <strong>Bestseller:</strong> ${item.is_bestseller ? 'Yes' : 'No'}<br>
+                            ${item.size ? `<strong>Size:</strong> ${item.size}<br>` : ''}
+                            ${item.prep_time_mins ? `<strong>Prep:</strong> ${item.prep_time_mins} mins<br>` : ''}
+                        </div>
+                        <div class="list-item-addons">
+                            <strong>Addons:</strong> ${addonsHtml}
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn btn-select" data-id="${item.id}" data-name="${item.name}">Manage Addons</button>
+                            <button class="btn btn-update" data-id="${item.id}" data-name="${item.name}">Update</button>
+                            <button class="btn btn-delete" data-id="${item.id}" data-name="${item.name}">Delete</button>
+                        </div>
+                    `;
+                    itemsList.appendChild(el);
+                });
+            }
+            
+            // MODIFIED: data-id was already here, no change needed
+            function renderAddons(addons) {
+                addonsList.innerHTML = '';
+                 if (!addons || addons.length === 0) {
+                    addonsList.innerHTML = '<p>No addons found for this item.</p>';
+                    return;
+                }
+                addons.forEach(addon => {
+                    const el = document.createElement('div');
+                    el.className = 'list-item';
+                    el.innerHTML = `
+                        <h4>${addon.name} (Global ID: ${addon.id})</h4>
+                        <div class="list-item-details">
+                            <strong>Price:</strong> $${addon.price}
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn btn-delete" data-id="${addon.id}">Remove from Item</button>
+                        </div>
+                    `;
+                    addonsList.appendChild(el);
+                });
+            }
+
+            // MODIFIED: Populates cache
+            function renderGlobalAddons(addons) {
+                globalAddonListContainer.innerHTML = '';
+                globalAddonCache.clear(); 
+                
+                if (!addons || addons.length === 0) {
+                    globalAddonListContainer.innerHTML = '<p>No addons found in database.</p>';
+                    return;
+                }
+                addons.forEach(addon => {
+                    globalAddonCache.set(addon.name, addon.price); 
+                    
+                    const el = document.createElement('div');
+                    el.className = 'list-item';
+                    el.innerHTML = `
+                        <h4>${addon.name} (ID: ${addon.id})</h4>
+                        <div class="list-item-details">
+                            <strong>Price:</strong> $${addon.price}
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn btn-delete global-delete" data-id="${addon.id}">Delete Globally</button>
+                        </div>
+                    `;
+                    globalAddonListContainer.appendChild(el);
+                });
+            }
+
+            // --- Core Functions ---
+            
+            // CATEGORY
+            async function fetchCategories() {
+                try {
+                    const categories = await api('/categories');
+                    renderCategories(categories);
+                } catch (err) {}
+            }
+
+            async function createCategory(e) {
+                e.preventDefault();
+                const name = document.getElementById('category-name-input').value;
+                if (!name) return;
+                try {
+                    await api('/categories', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name })
+                    });
+                    document.getElementById('category-name-input').value = '';
+                    fetchCategories(); 
+                } catch (err) {}
+            }
+            
+            // MODIFIED: Uses ID
+            async function updateCategory(id, currentName) {
+                const name = prompt(`Enter new name for "${currentName}":`, currentName);
+                if (!name || name === currentName) return;
+                try {
+                    await api(`/categories/${id}`, { // <-- Use ID
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name }) // 'newName' is now 'name'
+                    });
+                    fetchCategories();
+                } catch (err) {}
+            }
+
+            // MODIFIED: Uses ID
+            async function deleteCategory(id, name) {
+                if (!confirm(`Are you sure you want to delete "${name}"? This will delete all its items.`)) return;
+                try {
+                    await api(`/categories/${id}`, { method: 'DELETE' }); // <-- Use ID
+                    fetchCategories(); 
+                } catch (err) {}
+            }
+
+            // ITEM
+            // MODIFIED: Uses Category ID
+            async function fetchItems(categoryId) {
+                try {
+                    const items = await api(`/items/${categoryId}`); // <-- Use categoryId
+                    renderItems(items);
+                } catch (err) {
+                    itemsList.innerHTML = `<p style="color: red;">Could not load items: ${err.message}</p>`;
+                }
+            }
+            
+            // MODIFIED: Uses currentCategoryId
+            async function createItem(e) {
+                e.preventDefault();
+                if (!currentCategoryId) return;
+                
+                const itemData = {
+                    name: document.getElementById('item-name').value,
+                    price: parseFloat(document.getElementById('item-price').value),
+                    veg_type: document.getElementById('item-veg-type').value,
+                    size: document.getElementById('item-size').value || null,
+                    prep_time_mins: parseInt(document.getElementById('item-prep-time').value) || null,
+                    is_bestseller: document.getElementById('item-bestseller').checked
+                };
+                
+                try {
+                    await api(`/items/${currentCategoryId}`, { // <-- Use currentCategoryId
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(itemData)
+                    });
+                    createItemForm.reset();
+                    fetchItems(currentCategoryId); 
+                } catch (err) {}
+            }
+            
+            // MODIFIED: Uses Item ID
+            // MODIFIED: Uses Item ID and prompts for ALL fields
+            async function updateItem(itemId, itemName) {
+                // Get current item data to pre-fill prompts
+                let currentItem;
+                try {
+                    // We have to "find" the item in the rendered list to get its details
+                    // This is a limitation of this simple test panel
+                    const items = await api(`/items/${currentCategoryId}`);
+                    currentItem = items.find(i => i.id === Number(itemId));
+                } catch (e) { /* ignore */ }
+
+                if (!currentItem) {
+                    alert("Could not find current item details, will use blanks.");
+                    currentItem = {}; // Set to empty object
+                }
+
+                // Gather all fields. User can "cancel" to skip a field.
+                const name = prompt(`Enter new name (current: "${currentItem.name || ''}"):`, currentItem.name || '');
+                const price = prompt(`Enter new price (current: "${currentItem.price || ''}"):`, currentItem.price || '');
+                const veg_type = prompt(`Enter type (veg/non-veg) (current: "${currentItem.veg_type || ''}"):`, currentItem.veg_type || 'veg');
+                const size = prompt(`Enter size (current: "${currentItem.size || ''}"):`, currentItem.size || '');
+                const prep_time_mins = prompt(`Enter prep time (mins) (current: "${currentItem.prep_time_mins || ''}"):`, currentItem.prep_time_mins || '');
+                const is_bestseller = confirm(`Is this a Bestseller? (current: ${!!currentItem.is_bestseller})\n\nClick OK for YES, Cancel for NO.`);
+
+                const updateData = {};
+                
+                // Only add fields to the update request if the user provided a value
+                if (name !== null && name !== currentItem.name) updateData.name = name;
+                if (price !== null && price !== currentItem.price) updateData.price = parseFloat(price);
+                if (veg_type !== null && veg_type !== currentItem.veg_type) updateData.veg_type = veg_type;
+                if (size !== null && size !== currentItem.size) updateData.size = size;
+                if (prep_time_mins !== null && prep_time_mins !== currentItem.prep_time_mins) updateData.prep_time_mins = parseInt(prep_time_mins);
+                
+                // Always send the boolean value, as `confirm` gives a clear true/false
+                updateData.is_bestseller = is_bestseller; 
+                
+                if (Object.keys(updateData).length === 0) {
+                    alert("No changes were made.");
+                    return;
+                }
+                
+                // Remove the boolean if it wasn't changed (optional, but cleaner)
+                if (is_bestseller === currentItem.is_bestseller) {
+                     delete updateData.is_bestseller;
+                }
+                
+                // Check again if any *actual* changes are left
+                 if (Object.keys(updateData).length === 0) {
+                    alert("No changes were made.");
+                    return;
+                }
+
+                try {
+                    await api(`/items/${itemId}`, { // <-- Use itemId
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updateData)
+                    });
+                    fetchItems(currentCategoryId); // Refresh the list
+                } catch (err) {}
+            }
+
+            // MODIFIED: Uses Item ID
+            async function deleteItem(itemId, itemName) {
+                if (!confirm(`Are you sure you want to delete "${itemName}"?`)) return;
+                try {
+                    await api(`/items/${itemId}`, { method: 'DELETE' }); // <-- Use itemId
+                    fetchItems(currentCategoryId); 
+                } catch (err) {}
+            }
+
+
+            // --- ADDON (Item-Specific) ---
+            
+            // MODIFIED: Uses Item ID
+            async function fetchAddons(itemId) {
+                try {
+                    const addons = await api(`/addons/${itemId}`); // <-- Use itemId
+                    renderAddons(addons);
+                } catch (err) {
+                    addonsList.innerHTML = `<p style="color: red;">Could not load addons: ${err.message}</p>`;
+                }
+            }
+            
+            // MODIFIED: Uses currentItemId
+            async function addAddon(e) {
+                e.preventDefault();
+                if (!currentItemId) return;
+                
+                const name = addonNameInput.value;
+                
+                const addonData = { name };
+
+                if (addonPriceInput.required && addonPriceInput.value) {
+                    addonData.price = parseFloat(addonPriceInput.value);
+                } else if (addonPriceInput.required && !addonPriceInput.value) {
+                    alert('Price is required for new addon.');
+                    return;
+                }
+                
+                try {
+                    await api(`/addons/${currentItemId}`, { // <-- Use currentItemId
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(addonData) 
+                    });
+                    addAddonForm.reset();
+                    
+                    addonPriceContainer.style.display = 'block';
+                    addonPriceInput.required = true;
+                    addonHelperText.textContent = '';
+
+                    fetchAddons(currentItemId); 
+                    fetchGlobalAddons(); 
+                } catch (err) {}
+            }
+            
+            // MODIFIED: Uses currentItemId and addonId
+            async function removeAddon(addonId) {
+                if (!currentItemId) return;
+                if (!confirm(`Are you sure you want to remove this addon (ID: ${addonId}) from this item?`)) return;
+                try {
+                    await api(`/addons/${currentItemId}/${addonId}`, { method: 'DELETE' }); // <-- Use IDs
+                    fetchAddons(currentItemId); 
+                } catch (err) {}
+            }
+
+            // --- GLOBAL ADDON FUNCTIONS (Unchanged logic, just ensure API calls are correct) ---
+            
+            async function fetchGlobalAddons() {
+                try {
+                    const addons = await api('/addons');
+                    renderGlobalAddons(addons);
+                } catch (err) {}
+            }
+            
+            async function createGlobalAddon(e) {
+                e.preventDefault();
+                const name = document.getElementById('global-create-name').value;
+                const price = document.getElementById('global-create-price').value;
+
+                try {
+                    await api('/addons/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, price: parseFloat(price) })
+                    });
+                    document.getElementById('global-create-addon-form').reset();
+                    fetchGlobalAddons(); 
+                } catch (err) {}
+            }
+
+            async function updateGlobalAddon(e) {
+                e.preventDefault();
+                const addonId = document.getElementById('global-addon-id').value;
+                const name = document.getElementById('global-addon-name').value;
+                const price = document.getElementById('global-addon-price').value;
+                
+                if (!addonId) {
+                    alert('Addon ID is required.');
+                    return;
+                }
+                
+                const updateData = {};
+                if (name) updateData.name = name;
+                if (price) updateData.price = parseFloat(price);
+                
+                if (Object.keys(updateData).length === 0) {
+                    alert('Enter a new name or price to update.');
+                    return;
+                }
+                
+                try {
+                    const updatedAddon = await api(`/addons/update/${addonId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updateData)
+                    });
+                    alert(`Addon ${addonId} updated successfully! New Name: ${updatedAddon.name}, Price: $${updatedAddon.price}`);
+                    document.getElementById('update-addon-form').reset();
+                    fetchGlobalAddons();
+                } catch (err) {}
+            }
+
+            async function deleteGlobalAddon(addonId) {
+                if (!confirm(`Are you sure you want to DELETE this addon (ID: ${addonId}) GLOBALLY?\nThis will remove it from ALL items.`)) return;
+                
+                try {
+                    await api(`/addons/${addonId}`, { method: 'DELETE' });
+                    fetchGlobalAddons(); 
+                } catch (err) {}
+            }
+
+            // --- Event Listeners ---
+            
+            document.getElementById('load-categories-btn').addEventListener('click', fetchCategories);
+            fetchCategories();
+            fetchGlobalAddons();
+
+            // Global Addon Listeners
+            document.getElementById('load-all-addons-btn').addEventListener('click', fetchGlobalAddons);
+            document.getElementById('global-create-addon-form').addEventListener('submit', createGlobalAddon);
+            document.getElementById('update-addon-form').addEventListener('submit', updateGlobalAddon);
+            globalAddonListContainer.addEventListener('click', e => {
+                if (e.target.classList.contains('global-delete')) {
+                    const id = e.target.dataset.id;
+                    deleteGlobalAddon(id);
+                }
+            });
+
+            // Forms
+            document.getElementById('create-category-form').addEventListener('submit', createCategory);
+            createItemForm.addEventListener('submit', createItem);
+            addAddonForm.addEventListener('submit', addAddon);
+
+            // Addon name checker
+            addonNameInput.addEventListener('input', (e) => {
+                const name = e.target.value;
+                if (globalAddonCache.has(name)) {
+                    addonPriceContainer.style.display = 'none';
+                    addonPriceInput.required = false;
+                    const price = globalAddonCache.get(name);
+                    addonHelperText.textContent = `Existing addon found. Will link with price $${price}.`;
+                    addonHelperText.style.color = '#00796b';
+                } else {
+                    addonPriceContainer.style.display = 'block';
+                    addonPriceInput.required = true;
+                    addonHelperText.textContent = 'New addon, price is required.';
+                    addonHelperText.style.color = '#555';
+                }
+            });
+
+            // MODIFIED: Event Delegation for dynamic lists (uses data-id)
+            
+            categoriesList.addEventListener('click', e => {
+                const id = e.target.dataset.id;
+                const name = e.target.dataset.name;
+                if (!id) return;
+                
+                if (e.target.classList.contains('btn-select')) {
+                    currentCategoryId = id; // <-- SET ID
+                    currentCategoryName = name;
+                    itemsHeader.textContent = `Items in "${name}"`;
+                    createItemForm.style.display = 'flex';
+                    
+                    currentItemId = null; // Reset item
+                    currentItemName = null;
+                    itemsList.innerHTML = '';
+                    addonsList.innerHTML = '';
+                    addonsHeader.textContent = 'Select an Item to see addons';
+                    addAddonForm.style.display = 'none';
+                    
+                    fetchItems(id); // <-- Fetch by ID
+                } else if (e.target.classList.contains('btn-update')) {
+                    updateCategory(id, name); // <-- Pass ID
+                } else if (e.target.classList.contains('btn-delete')) {
+                    deleteCategory(id, name); // <-- Pass ID
+                }
+            });
+            
+            itemsList.addEventListener('click', e => {
+                const id = e.target.dataset.id;
+                const name = e.target.dataset.name;
+                if (!id) return;
+                
+                if (e.target.classList.contains('btn-select')) {
+                    currentItemId = id; // <-- SET ID
+                    currentItemName = name;
+                    addonsHeader.textContent = `Addons for "${name}"`;
+                    addAddonForm.style.display = 'flex';
+                    
+                    addAddonForm.reset();
+                    addonPriceContainer.style.display = 'block';
+                    addonPriceInput.required = true;
+                    addonHelperText.textContent = '';
+
+                    fetchAddons(id); // <-- Fetch by ID
+                } else if (e.target.classList.contains('btn-update')) {
+                    updateItem(id, name); // <-- Pass ID
+                } else if (e.target.classList.contains('btn-delete')) {
+                    deleteItem(id, name); // <-- Pass ID
+                }
+            });
+            
+            addonsList.addEventListener('click', e => {
+                const id = e.target.dataset.id;
+                if (!id) return;
+                
+                if (e.target.classList.contains('btn-delete')) {
+                    removeAddon(id); // <-- Pass addon ID
+                }
+            });
+        });
+    </script>
+</body>
+</html>

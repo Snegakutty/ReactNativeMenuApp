@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+dist/
+coverage/
+
+# Build output
+dist/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+npm-debug.log*

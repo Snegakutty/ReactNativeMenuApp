@@ -1,0 +1,21 @@
+export const colors = {
+  background: '#f4f7f6',
+  surface: '#ffffff',
+  surfaceAlt: '#f9f9f9',
+  primary: '#1a535c',
+  primaryHover: '#4ecdc4',
+  warning: '#fca11a',
+  warningHover: '#e08e17',
+  danger: '#ff6b6b',
+  dangerHover: '#e05252',
+  info: '#007bff',
+  infoHover: '#0056b3',
+  muted: '#555555',
+  border: '#dddddd',
+  cardBorder: '#eeeeee',
+  addonTagBackground: '#e0f2f1',
+  addonTagText: '#00796b',
+  heading: '#1a535c',
+  text: '#333333',
+};
+
