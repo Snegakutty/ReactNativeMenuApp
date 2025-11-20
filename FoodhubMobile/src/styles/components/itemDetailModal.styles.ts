@@ -88,15 +88,33 @@ export const itemDetailModalStyles = StyleSheet.create({
     padding: theme.spacing.m,
     borderRadius: theme.radii.s,
   },
+  selectedAddonItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.m,
+    borderRadius: theme.radii.s,
+  },
   addonName: {
     ...theme.typography.body,
     fontWeight: '500',
     color: theme.colors.heading,
   },
+  selectedAddonName: {
+    ...theme.typography.body,
+    fontWeight: '500',
+    color: theme.colors.surface,
+  },
   addonPrice: {
     ...theme.typography.body,
     fontWeight: '600',
     color: theme.colors.primary,
+  },
+  selectedAddonPrice: {
+    ...theme.typography.body,
+    fontWeight: '600',
+    color: theme.colors.surface,
   },
   noAddons: {
     ...theme.typography.body,
