@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList,Text } from 'react-native';
 import { Item } from '../../services/api';
 import { ItemCard } from '../../components/ItemCard';
 import { dashboardStyles } from '../../styles/screens/dashboard.styles';
@@ -31,6 +31,7 @@ export default function ItemsList({ items }: { items: Item[] }) {
             onPress={() => onItemPress(item)}
           />
         )}
+        ListEmptyComponent={<Text>No items found</Text>}
       />
     </View>
   );

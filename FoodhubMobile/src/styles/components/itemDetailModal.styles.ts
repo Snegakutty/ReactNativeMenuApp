@@ -103,5 +103,56 @@ export const itemDetailModalStyles = StyleSheet.create({
     color: theme.colors.muted,
     fontStyle: 'italic',
   },
+  addItemButton: {
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.m,
+    borderRadius: theme.radii.m,
+    alignItems: 'center',
+    marginTop: theme.spacing.l,
+  },
+  addItemText: {
+    ...theme.typography.button,
+    color: theme.colors.surface,
+    fontWeight: '600',
+  },
+  quantitySelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: theme.spacing.l,
+    gap: theme.spacing.m,
+  },
+  quantityButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: theme.colors.cardBorder,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quantityButtonText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: theme.colors.heading,
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: theme.colors.heading,
+    minWidth: 30,
+    textAlign: 'center',
+  },
+  nextButton: {
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.m,
+    borderRadius: theme.radii.m,
+    alignItems: 'center',
+    marginTop: theme.spacing.m,
+  },
+  nextText: {
+    ...theme.typography.button,
+    color: theme.colors.surface,
+    fontWeight: '600',
+  },
 });
 

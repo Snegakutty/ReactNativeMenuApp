@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, SafeAreaView, StatusBar, Text, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StatusBar, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../store';
 
 import {
   fetchFullMenu,
   selectCategories,
   selectMenuLoading,
-  selectMenuLoaded
+  selectMenuLoaded,
 } from '../../store/slices/menuSlice';
 
 import { dashboardStyles } from '../../styles/screens/dashboard.styles';

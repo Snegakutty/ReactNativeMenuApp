@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Modal,
   Pressable,
@@ -10,12 +10,15 @@ import {
 import {itemDetailModalStyles} from '../styles/components/itemDetailModal.styles';
 import {Item, Addon} from '../services/api';
 import {formatCurrency} from '../utils/formatCurrency';
+import { useAppDispatch } from '../store';
+import { addItem } from '../store/slices/cartSlice';
 
 type ItemDetailModalProps = {
   visible: boolean;
   item: Item | null;
   addons: Addon[];
   onClose: () => void;
+  navigation: any;
 };
 
 export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
@@ -23,9 +26,13 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   item,
   addons,
   onClose,
+  navigation,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
+  const [showQuantitySelector, setShowQuantitySelector] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (visible) {
@@ -45,6 +52,8 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
     } else {
       fadeAnim.setValue(0);
       slideAnim.setValue(50);
+      setShowQuantitySelector(false);
+      setQuantity(1);
     }
   }, [visible, fadeAnim, slideAnim]);
 
@@ -127,6 +136,49 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                   </Text>
                 )}
               </View>
+
+              {!showQuantitySelector && (
+                <Pressable
+                  style={itemDetailModalStyles.addItemButton}
+                  onPress={() => {
+                    dispatch(addItem({ id: item.id, name: item.name, price: item.price, quantity: 1 }));
+                    onClose();
+                    navigation.navigate('Cart');
+                  }}
+                >
+                  <Text style={itemDetailModalStyles.addItemText}>Add Item</Text>
+                </Pressable>
+              )}
+
+              {showQuantitySelector && (
+                <View>
+                  <View style={itemDetailModalStyles.quantitySelector}>
+                    <Pressable
+                      style={itemDetailModalStyles.quantityButton}
+                      onPress={() => setQuantity(Math.max(1, quantity - 1))}
+                    >
+                      <Text style={itemDetailModalStyles.quantityButtonText}>-</Text>
+                    </Pressable>
+                    <Text style={itemDetailModalStyles.quantityText}>{quantity}</Text>
+                    <Pressable
+                      style={itemDetailModalStyles.quantityButton}
+                      onPress={() => setQuantity(quantity + 1)}
+                    >
+                      <Text style={itemDetailModalStyles.quantityButtonText}>+</Text>
+                    </Pressable>
+                  </View>
+                  <Pressable
+                    style={itemDetailModalStyles.nextButton}
+                    onPress={() => {
+                      dispatch(addItem({ id: item.id, name: item.name, price: item.price, quantity }));
+                      onClose();
+                      navigation.navigate('Cart');
+                    }}
+                  >
+                    <Text style={itemDetailModalStyles.nextText}>Next</Text>
+                  </Pressable>
+                </View>
+              )}
             </ScrollView>
           </Pressable>
         </Animated.View>

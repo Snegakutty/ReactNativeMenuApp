@@ -16,7 +16,7 @@ export default function CategorySection({ category }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const itemsByCategory = useAppSelector(selectItemsByCategory);
-  const items = itemsByCategory[category.id];
+  const items = itemsByCategory[category.id] || [];
 
   const handlePress = () => {
     setIsOpen(prev => !prev);
