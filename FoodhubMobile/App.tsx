@@ -8,7 +8,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {store} from './src/store';
-import {DashboardScreen} from './src/screens/DashboardScreen';
+import {DashboardScreen} from './src/screens/Dashboard/DashboardScreen';
 
 function App(): React.JSX.Element {
   return (

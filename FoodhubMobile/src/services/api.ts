@@ -25,7 +25,7 @@ export const apiClient = axios.create({
   },
   timeout: 10_000,
 });
-
+//clean the api err and provde readable msgs
 apiClient.interceptors.response.use(
   response => response,
   error => {

@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Item} from '../../services/api';
-import type {RootState} from '../types';
+import type {RootState} from '../index';
 
 interface UIState {
   selectedCategoryId: number | null;
@@ -48,7 +48,7 @@ export const {
   closeModal,
 } = uiSlice.actions;
 
-// Selectors
+
 export const selectSelectedCategoryId = (state: RootState) =>
   state.ui.selectedCategoryId;
 export const selectSelectedItem = (state: RootState) => state.ui.selectedItem;

@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import {itemsApi, Item} from '../../services/api';
-import type {RootState} from '../types';
+import type {RootState} from '../index';
 
 interface ItemsState {
   itemsMap: Record<number, Item[]>;
@@ -67,7 +67,6 @@ const itemsSlice = createSlice({
 export const {clearItems, clearItemsForCategory, clearError} =
   itemsSlice.actions;
 
-// Selectors
 export const selectItemsMap = (state: RootState) => state.items.itemsMap;
 export const selectItemsLoading = (state: RootState) => state.items.isLoading;
 export const selectItemsLoadingCategoryId = (state: RootState) =>

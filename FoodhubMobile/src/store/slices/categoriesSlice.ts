@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import {categoriesApi, Category} from '../../services/api';
-import type {RootState} from '../types';
+import type {RootState} from '../index';
 
 interface CategoriesState {
   categories: Category[];
@@ -55,7 +55,7 @@ const categoriesSlice = createSlice({
 
 export const {clearError} = categoriesSlice.actions;
 
-// Selectors
+
 export const selectCategories = (state: RootState) =>
   state.categories.categories;
 export const selectCategoriesLoading = (state: RootState) =>

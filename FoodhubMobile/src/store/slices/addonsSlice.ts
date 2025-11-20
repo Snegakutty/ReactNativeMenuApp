@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import {addonsApi, Addon} from '../../services/api';
-import type {RootState} from '../types';
+import type {RootState} from '../index';
 
 interface AddonsState {
   addons: Addon[];
@@ -58,7 +58,7 @@ const addonsSlice = createSlice({
 
 export const {clearAddons, clearError} = addonsSlice.actions;
 
-// Selectors
+
 export const selectAddons = (state: RootState) => state.addons.addons;
 export const selectAddonsLoading = (state: RootState) =>
   state.addons.isLoading;
