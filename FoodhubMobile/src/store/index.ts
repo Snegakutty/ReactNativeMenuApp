@@ -1,20 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 
-import categoriesReducer from './slices/categoriesSlice';
-import itemsReducer from './slices/itemsSlice';
-import addonsReducer from './slices/addonsSlice';
+import menuReducer from './slices/menuSlice';   // NEW (categories + items + addons)
 import uiReducer from './slices/uiSlice';
 
 export const store = configureStore({
   reducer: {
-    categories: categoriesReducer,
-    items: itemsReducer,
-    addons: addonsReducer,
-    ui: uiReducer,
+    menu: menuReducer,   
+    ui: uiReducer,                  
   },
 });
-
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

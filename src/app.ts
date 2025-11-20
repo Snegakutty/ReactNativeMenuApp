@@ -13,7 +13,7 @@ import logger from "./config/logger";
 import categoryRoutes from "./routes/categories";
 import itemRoutes from "./routes/items";
 import addonRoutes from "./routes/addons";
-
+import menuRoutes from "./routes/menu";
 // Import the new error handler
 import { errorHandler } from "./middleware/errorHandler";
 
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use("/categories", categoryRoutes);
 app.use("/items", itemRoutes);
 app.use("/addons", addonRoutes);
-
+app.use("/menu", menuRoutes);
 // --- Global Error Handler ---
 app.use(errorHandler);
 

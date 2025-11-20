@@ -3,11 +3,11 @@ import { ActivityIndicator, SafeAreaView, StatusBar, Text, View } from 'react-na
 import { useAppDispatch, useAppSelector } from '../../store';
 
 import {
-  fetchCategories,
+  fetchFullMenu,
   selectCategories,
-  selectCategoriesLoading,
-  selectCategoriesError,
-} from '../../store/slices/categoriesSlice';
+  selectMenuLoading,
+  selectMenuLoaded
+} from '../../store/slices/menuSlice';
 
 import { dashboardStyles } from '../../styles/screens/dashboard.styles';
 import { theme } from '../../theme';
@@ -16,18 +16,18 @@ import DashboardHeader from './DashboardHeader';
 import CategoriesList from './CategoriesList';
 import ItemModalController from './ItemModalController';
 
-
 export const DashboardScreen = () => {
   const dispatch = useAppDispatch();
 
   const categories = useAppSelector(selectCategories);
-  const categoriesLoading = useAppSelector(selectCategoriesLoading);
-  const categoriesError = useAppSelector(selectCategoriesError);
+  const loading = useAppSelector(selectMenuLoading);
+  const loaded = useAppSelector(selectMenuLoaded);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
-
+    if (!loaded) {
+      dispatch(fetchFullMenu());
+    }
+  }, [dispatch, loaded]);
 
   return (
     <SafeAreaView style={dashboardStyles.safeArea}>
@@ -36,10 +36,8 @@ export const DashboardScreen = () => {
       <View style={dashboardStyles.container}>
         <DashboardHeader />
 
-        {categoriesLoading ? (
+        {loading ? (
           <ActivityIndicator color={theme.colors.primary} />
-        ) : categoriesError ? (
-          <Text style={dashboardStyles.errorText}>{categoriesError}</Text>
         ) : (
           <CategoriesList categories={categories} />
         )}

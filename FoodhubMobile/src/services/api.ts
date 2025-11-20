@@ -45,12 +45,14 @@ export type Category = {
 export type VegType = 'veg' | 'non-veg' | 'VEG' | 'NON-VEG';
 
 export type Addon = {
+  item_id: any;
   id: number;
   name: string;
   price: number;
 };
 
 export type Item = {
+  category_id: any;
   id: number;
   name: string;
   price: number;
@@ -78,6 +80,12 @@ export const itemsApi = {
 export const addonsApi = {
   listForItem: async (itemId: number): Promise<Addon[]> => {
     const {data} = await apiClient.get<Addon[]>(`/addons/${itemId}`);
+    return data;
+  },
+};
+export const menuApi = {
+  full: async () => {
+    const { data } = await apiClient.get('/menu/full');
     return data;
   },
 };

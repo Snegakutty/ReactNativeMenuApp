@@ -8,21 +8,19 @@ import {
   closeModal
 } from '../../store/slices/uiSlice';
 
-import {
-  selectAddons,
-  clearAddons
-} from '../../store/slices/addonsSlice';
+import { selectAddonsByItem } from '../../store/slices/menuSlice';
 
 export default function ItemModalController() {
   const dispatch = useAppDispatch();
 
   const selectedItem = useAppSelector(selectSelectedItem);
   const modalVisible = useAppSelector(selectModalVisible);
-  const addons = useAppSelector(selectAddons);
+
+  const addonsByItem = useAppSelector(selectAddonsByItem);
+  const addons = selectedItem ? addonsByItem[selectedItem.id] : [];
 
   const handleClose = () => {
     dispatch(closeModal());
-    dispatch(clearAddons());
   };
 
   return (
