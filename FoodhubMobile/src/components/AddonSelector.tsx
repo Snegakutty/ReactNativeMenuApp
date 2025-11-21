@@ -6,7 +6,7 @@ import { formatCurrency } from '../utils/formatCurrency';
 
 type AddonSelectorProps = {
   addons: Addon[];
-  // Removed selectedAddons and setSelectedAddons as they are no longer needed for display only
+  
 };
 
 export const AddonSelector: React.FC<AddonSelectorProps> = ({

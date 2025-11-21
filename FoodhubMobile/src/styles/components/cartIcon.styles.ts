@@ -8,13 +8,14 @@ export const cartIconStyles = StyleSheet.create({
     marginRight: 8,
   },
   iconText: {
-    fontSize: 24, // Size of the Cart Emoji/Icon
+    fontSize: 24,
+    color: theme.colors.primary, // Icon is now Blue
   },
   badge: {
     position: 'absolute',
     right: 0,
     top: 0,
-    backgroundColor: 'red',
+    backgroundColor: theme.colors.danger,
     borderRadius: 10,
     minWidth: 20,
     height: 20,
@@ -24,11 +25,9 @@ export const cartIconStyles = StyleSheet.create({
     borderColor: theme.colors.background,
   },
   badgeText: {
-    color: 'white',
+    color: theme.colors.surface,
     fontSize: 10,
     fontWeight: 'bold',
     textAlign: 'center',
   },
 });
-
-

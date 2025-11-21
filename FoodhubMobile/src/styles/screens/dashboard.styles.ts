@@ -9,18 +9,16 @@ export const dashboardStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  
   content: {
     padding: theme.spacing.l,
     paddingBottom: theme.spacing.xl,
   },
- heading: {
-  fontSize: 24,
-  fontWeight: 'bold',
-  color: theme.colors.text,
-  // Remove heavy margins if they exist, let the header container handle padding
-  marginVertical: 0, 
-},
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: theme.colors.heading,
+    marginVertical: 0, 
+  },
   placeholder: {
     ...theme.typography.caption,
     color: theme.colors.muted,
@@ -45,5 +43,16 @@ export const dashboardStyles = StyleSheet.create({
     flexDirection: 'column',
     gap: theme.spacing.xs,
   },
+  
+  emptyListContainer: {
+    padding: theme.spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyListText: {
+    ...theme.typography.body,
+    color: theme.colors.muted, 
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
 });
-

@@ -3,19 +3,19 @@ import {theme} from '../../theme';
 
 export const categoryCardStyles = StyleSheet.create({
   container: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: theme.colors.surface,
     borderRadius: theme.radii.m,
     padding: theme.spacing.l,
     alignItems: 'flex-start',
     justifyContent: 'center',
     minHeight: 60,
-    borderWidth: 2,
-    borderColor: '#2196F3',
+    borderWidth: 1,
+    borderColor: theme.colors.cardBorder,
     marginBottom: theme.spacing.s,
   },
   active: {
-    backgroundColor: '#2196F3',
-    borderColor: '#1976D2',
+    backgroundColor: theme.colors.primary, // Active is now Main Blue
+    borderColor: theme.colors.primaryHover,
   },
   pressed: {
     opacity: 0.7,
@@ -24,10 +24,9 @@ export const categoryCardStyles = StyleSheet.create({
     ...theme.typography.body,
     fontSize: 18,
     fontWeight: '600',
-    color: '#1976D2',
+    color: theme.colors.primary, // Inactive text is Blue
   },
   activeText: {
-    color: theme.colors.surface,
+    color: theme.colors.surface, // Active text is White
   },
 });
-

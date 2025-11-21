@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { apiClient, Category, Item, Addon } from '../../services/api';
+import { apiClient, Category, Item, Addon,menuApi } from '../../services/api';
 import { RootState } from '../index';
 
 export const fetchFullMenu = createAsyncThunk(
   'menu/fetchFullMenu',
   async () => {
-    const { data } = await apiClient.get('/menu/full');
+    const data = await menuApi.full();
     return data;
   }
 );

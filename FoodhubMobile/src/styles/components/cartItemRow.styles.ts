@@ -15,10 +15,11 @@ export const cartItemRowStyles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 4,
+    color: theme.colors.text,
   },
   itemPrice: {
     fontSize: 14,
-    color: '#666',
+    color: theme.colors.muted,
   },
   controlsRight: {
     flexDirection: 'row',
@@ -27,16 +28,16 @@ export const cartItemRowStyles = StyleSheet.create({
   topDeleteBtn: {
     marginLeft: 12,
     padding: 8,
-    backgroundColor: '#ffeeee',
+    backgroundColor: '#FFEBEE', // Keep light red for delete
     borderRadius: 6,
   },
   deleteText: {
     fontSize: 16,
-    color: 'red',
+    color: theme.colors.danger,
   },
   addonSummaryText: {
     fontSize: 12, 
-    color: '#666', 
+    color: theme.colors.muted, 
     marginTop: 4,
     fontStyle: 'italic',
   },
@@ -45,10 +46,10 @@ export const cartItemRowStyles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingVertical: 4,
     paddingHorizontal: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: theme.colors.surfaceAlt, // Light Blue
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: theme.colors.cardBorder,
   },
   customizeText: {
     fontSize: 12,
@@ -57,11 +58,11 @@ export const cartItemRowStyles = StyleSheet.create({
   },
   addonListContainer: {
     marginTop: 10,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#F1F8FF', // Very faint blue
     padding: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#f0f0f0',
+    borderColor: theme.colors.cardBorder,
   },
   addonRow: {
     flexDirection: 'row',
@@ -70,11 +71,11 @@ export const cartItemRowStyles = StyleSheet.create({
     marginBottom: 8,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: theme.colors.cardBorder,
   },
   addonName: {
     fontSize: 14,
-    color: '#333',
+    color: theme.colors.text,
     maxWidth: '45%',
   },
   addonControls: {
@@ -84,16 +85,16 @@ export const cartItemRowStyles = StyleSheet.create({
   smallBtn: {
     width: 26,
     height: 26,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.surface,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: theme.colors.cardBorder,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 13,
   },
   disabledBtn: {
     opacity: 0.3,
-    borderColor: '#eee',
+    borderColor: theme.colors.border,
   },
   addonCount: {
     marginHorizontal: 8,
@@ -101,6 +102,7 @@ export const cartItemRowStyles = StyleSheet.create({
     fontWeight: 'bold',
     minWidth: 16,
     textAlign: 'center',
+    color: theme.colors.heading,
   },
   delBtn: {
     marginLeft: 8,
@@ -108,7 +110,7 @@ export const cartItemRowStyles = StyleSheet.create({
   },
   delText: {
     fontSize: 20,
-    color: '#999',
+    color: theme.colors.muted,
     fontWeight: '300',
   },
 });

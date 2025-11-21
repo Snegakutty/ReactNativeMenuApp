@@ -4,7 +4,7 @@ import {theme} from '../../theme';
 export const itemDetailModalStyles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(15, 23, 42, 0.6)', // Darker blue-ish overlay
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing.l,
@@ -35,13 +35,13 @@ export const itemDetailModalStyles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: theme.colors.danger,
+    backgroundColor: theme.colors.surfaceAlt, // Change from Danger to Light Blue
     justifyContent: 'center',
     alignItems: 'center',
   },
   closeText: {
     fontSize: 24,
-    color: theme.colors.surface,
+    color: theme.colors.text,
     lineHeight: 28,
   },
   content: {
@@ -71,11 +71,13 @@ export const itemDetailModalStyles = StyleSheet.create({
   },
   tag: {
     ...theme.typography.caption,
-    backgroundColor: theme.colors.cardBorder,
+    backgroundColor: theme.colors.surfaceAlt,
     paddingHorizontal: theme.spacing.s,
     paddingVertical: theme.spacing.xs,
     borderRadius: theme.radii.s,
-    color: theme.colors.muted,
+    color: theme.colors.primary,
+    borderWidth: 1,
+    borderColor: theme.colors.cardBorder,
   },
   addonsList: {
     gap: theme.spacing.s,
@@ -84,7 +86,9 @@ export const itemDetailModalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: theme.colors.cardBorder,
+    backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.cardBorder,
     padding: theme.spacing.m,
     borderRadius: theme.radii.s,
   },
@@ -99,7 +103,7 @@ export const itemDetailModalStyles = StyleSheet.create({
   addonName: {
     ...theme.typography.body,
     fontWeight: '500',
-    color: theme.colors.heading,
+    color: theme.colors.text,
   },
   selectedAddonName: {
     ...theme.typography.body,
@@ -144,14 +148,14 @@ export const itemDetailModalStyles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.cardBorder,
+    backgroundColor: theme.colors.surfaceAlt,
     justifyContent: 'center',
     alignItems: 'center',
   },
   quantityButtonText: {
     fontSize: 20,
     fontWeight: '600',
-    color: theme.colors.heading,
+    color: theme.colors.primary,
   },
   quantityText: {
     fontSize: 18,
@@ -173,4 +177,3 @@ export const itemDetailModalStyles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-

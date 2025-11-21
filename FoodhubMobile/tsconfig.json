@@ -9,6 +9,8 @@
       "@theme": ["src/theme"],
       "@services/*": ["src/services/*"],
       "@hooks/*": ["src/hooks/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

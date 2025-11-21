@@ -32,24 +32,31 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         style,
       ]}
       onPress={onPress}>
+      
       <Text style={itemCardStyles.name}>
-        {name}--{formatCurrency(price)}
+        {name} - {formatCurrency(price)}
       </Text>
+      
       <View style={itemCardStyles.details}>
-        {vegType && (
+        
+        {vegType ? (
           <Text style={itemCardStyles.detailTag}>
             {vegType.toUpperCase()}
           </Text>
-        )}
-        {isBestseller && (
+        ) : null}
+
+        {isBestseller ? (
           <Text style={itemCardStyles.detailTag}>⭐ Bestseller</Text>
-        )}
-        {size && <Text style={itemCardStyles.detailTag}>{size}</Text>}
-        {prepTime && (
+        ) : null}
+
+        {size ? (
+          <Text style={itemCardStyles.detailTag}>{size}</Text>
+        ) : null}
+
+        {prepTime ? (
           <Text style={itemCardStyles.detailTag}>{prepTime} mins</Text>
-        )}
+        ) : null}
       </View>
     </Pressable>
   );
 };
-

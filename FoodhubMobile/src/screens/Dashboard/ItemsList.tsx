@@ -31,7 +31,11 @@ export default function ItemsList({ items }: { items: Item[] }) {
             onPress={() => onItemPress(item)}
           />
         )}
-        ListEmptyComponent={<Text>No items found</Text>}
+        ListEmptyComponent={
+          <View style={dashboardStyles.emptyListContainer}>
+            <Text style={dashboardStyles.emptyListText}>No items found</Text>
+          </View>
+        }
       />
     </View>
   );

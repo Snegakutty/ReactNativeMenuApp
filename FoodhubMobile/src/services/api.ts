@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Platform} from 'react-native';
 
-
+import localMenuData from '../data/menuData.json';
 const getApiBaseUrl = () => {
   if (__DEV__) {
     if (Platform.OS === 'android') {
@@ -23,17 +23,14 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10_000,
+  timeout: 2000,
 });
-//clean the api err and provde readable msgs
+
 apiClient.interceptors.response.use(
   response => response,
   error => {
-    const message =
-      error.response?.data?.message ??
-      error.message ??
-      'Something went wrong while contacting the API.';
-    return Promise.reject(new Error(message));
+    
+    return Promise.reject(error);
   },
 );
 
@@ -77,16 +74,22 @@ export const itemsApi = {
   },
 };
 
-export const addonsApi = {
-  listForItem: async (itemId: number): Promise<Addon[]> => {
-    const {data} = await apiClient.get<Addon[]>(`/addons/${itemId}`);
-    return data;
-  },
-};
 export const menuApi = {
   full: async () => {
-    const { data } = await apiClient.get('/menu/full');
-    return data;
+    try {
+      console.log('Attempting to fetch menu from Server...');
+      
+      const { data } = await apiClient.get('/menu/full');
+      console.log('Connected to Server. Using DB data.');
+      return data;
+
+    } catch (error) {
+     
+      console.warn('Server unreachable or failed. Switching to Local JSON.');
+      
+     
+      return localMenuData;
+    }
   },
 };
 

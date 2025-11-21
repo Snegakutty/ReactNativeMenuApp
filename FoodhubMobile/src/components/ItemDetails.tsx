@@ -18,24 +18,31 @@ export const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
       <View style={itemDetailModalStyles.section}>
         <Text style={itemDetailModalStyles.sectionTitle}>Details</Text>
         <View style={itemDetailModalStyles.tags}>
-          {item.veg_type && (
+          
+          {/* FIX: Use ternary operators (? :) instead of && to avoid rendering '0' */}
+          
+          {item.veg_type ? (
             <Text style={itemDetailModalStyles.tag}>
               {item.veg_type.toUpperCase()}
             </Text>
-          )}
-          {item.is_bestseller && (
+          ) : null}
+
+          {item.is_bestseller ? (
             <Text style={itemDetailModalStyles.tag}>⭐ Bestseller</Text>
-          )}
-          {item.size && (
+          ) : null}
+
+          {item.size ? (
             <Text style={itemDetailModalStyles.tag}>
               Size: {item.size}
             </Text>
-          )}
-          {item.prep_time_mins && (
+          ) : null}
+
+          {item.prep_time_mins ? (
             <Text style={itemDetailModalStyles.tag}>
               Prep: {item.prep_time_mins} mins
             </Text>
-          )}
+          ) : null}
+          
         </View>
       </View>
     </>

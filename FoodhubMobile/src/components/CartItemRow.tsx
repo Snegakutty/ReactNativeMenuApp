@@ -18,8 +18,7 @@ export const CartItemRow = ({ item, index, width }: Props) => {
   const dispatch = useAppDispatch();
   const [isCustomizing, setIsCustomizing] = useState(false);
   
-  // FIX: Manage animation locally so duplicate items don't conflict
-  const slideAnim = useRef(new Animated.Value(0)).current;
+ const slideAnim = useRef(new Animated.Value(0)).current;
 
   const allAddons = useAppSelector(state => state.menu.addonsByItem[item.id] || []);
 
