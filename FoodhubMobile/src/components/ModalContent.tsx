@@ -9,23 +9,46 @@ import { QuantitySelector } from './QuantitySelector';
 type ModalContentProps = {
   item: Item;
   addons: Addon[];
-  onAddToCart: (quantity: number, selectedAddons: Addon[]) => void;
+  onInitialAdd: (selectedAddons: Addon[]) => void;
+  onIncrement: () => void;
+  onDecrement: () => void;
 };
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   item,
   addons,
-  onAddToCart,
+  onInitialAdd,
+  onIncrement,
+  onDecrement,
 }) => {
-  const [showQuantitySelector, setShowQuantitySelector] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
 
+  
   useEffect(() => {
-    setShowQuantitySelector(false);
+    setIsAdded(false);
     setQuantity(1);
-    setSelectedAddons([]);
   }, [item]);
+
+  const handleAddPress = () => {
+    setIsAdded(true);
+    onInitialAdd([]); 
+  };
+
+  const handleIncrease = () => {
+    setQuantity(prev => prev + 1);
+    onIncrement();
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(prev => prev - 1);
+      onDecrement();
+    } else {
+      setIsAdded(false);
+      onDecrement(); 
+    }
+  };
 
   return (
     <ScrollView style={itemDetailModalStyles.content}>
@@ -33,26 +56,20 @@ export const ModalContent: React.FC<ModalContentProps> = ({
 
       <AddonSelector
         addons={addons}
-        selectedAddons={selectedAddons}
-        setSelectedAddons={setSelectedAddons}
       />
 
-      {!showQuantitySelector && (
+      {!isAdded ? (
         <Pressable
           style={itemDetailModalStyles.addItemButton}
-          onPress={() => {
-            onAddToCart(1, selectedAddons);
-          }}
+          onPress={handleAddPress}
         >
           <Text style={itemDetailModalStyles.addItemText}>Add Item</Text>
         </Pressable>
-      )}
-
-      {showQuantitySelector && (
+      ) : (
         <QuantitySelector
           quantity={quantity}
-          setQuantity={setQuantity}
-          onAddToCart={() => onAddToCart(quantity, selectedAddons)}
+          onIncrease={handleIncrease}
+          onDecrease={handleDecrease}
         />
       )}
     </ScrollView>

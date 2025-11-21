@@ -3,7 +3,7 @@ import {Modal, Pressable, Animated} from 'react-native';
 import {itemDetailModalStyles} from '../styles/components/itemDetailModal.styles';
 import {Item, Addon} from '../services/api';
 import {useAppDispatch} from '../store';
-import {addItem} from '../store/slices/cartSlice';
+import {addItem, decrementQuantity, incrementQuantity} from '../store/slices/cartSlice';
 import {ModalHeader} from "./ModalHeader";
 import {ModalContent} from './ModalContent';
 
@@ -20,7 +20,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   item,
   addons,
   onClose,
-  navigation,
+  
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
@@ -40,10 +40,26 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
 
   if (!item) return null;
 
-  const handleAddToCart = (quantity: number, selectedAddons: Addon[]) => {
-    dispatch(addItem({id: item.id, name: item.name, price: item.price, quantity, selectedAddons}));
-    onClose();
-    navigation.navigate('Cart');
+  
+  const handleInitialAdd = (selectedAddons: Addon[]) => {
+    dispatch(addItem({
+      id: item.id, 
+      name: item.name, 
+      price: item.price, 
+      quantity: 1, 
+      selectedAddons
+    }));
+   
+  };
+
+  
+  const handleIncrement = () => {
+    dispatch(incrementQuantity(item.id));
+  };
+
+ 
+  const handleDecrement = () => {
+    dispatch(decrementQuantity(item.id));
   };
 
   return (
@@ -52,7 +68,13 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
         <Animated.View style={[itemDetailModalStyles.modal, {opacity: fadeAnim, transform: [{translateY: slideAnim}]}]}>
           <Pressable onPress={e => e.stopPropagation()}>
             <ModalHeader item={item} onClose={onClose} />
-            <ModalContent item={item} addons={addons} onAddToCart={handleAddToCart} />
+            <ModalContent 
+              item={item} 
+              addons={addons} 
+              onInitialAdd={handleInitialAdd}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+            />
           </Pressable>
         </Animated.View>
       </Pressable>

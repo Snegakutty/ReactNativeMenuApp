@@ -52,9 +52,15 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
+    updateItemAddons: (state, action: PayloadAction<{ index: number; newAddons: Addon[] }>) => {
+      const { index, newAddons } = action.payload;
+      if (state.items[index]) {
+        state.items[index].selectedAddons = newAddons;
+      }
+    },
   },
 });
 
-export const { addItem, incrementQuantity, decrementQuantity, removeItem, clearCart } = cartSlice.actions;
+export const { addItem, incrementQuantity, decrementQuantity, removeItem, clearCart,updateItemAddons } = cartSlice.actions;
 
 export default cartSlice.reducer;

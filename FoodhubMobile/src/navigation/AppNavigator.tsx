@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import { store } from '../store';
-import {DashboardScreen} from '../screens/Dashboard/DashboardScreen';
+import { DashboardScreen } from '../screens/Dashboard/DashboardScreen';
 import CartScreen from '../screens/CartScreen';
 
 const Stack = createNativeStackNavigator();
@@ -13,8 +13,15 @@ export default function AppNavigator() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Dashboard">
-          <Stack.Screen name="Dashboard" component={DashboardScreen} />
-          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen 
+            name="Dashboard" 
+            component={DashboardScreen} 
+            options={{ headerShown: false }} // <--- Add this line
+          />
+          <Stack.Screen 
+            name="Cart" 
+            component={CartScreen} 
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

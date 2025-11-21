@@ -4,37 +4,31 @@ import { itemDetailModalStyles } from '../styles/components/itemDetailModal.styl
 
 type QuantitySelectorProps = {
   quantity: number;
-  setQuantity: (quantity: number) => void;
-  onAddToCart: () => void;
+  onIncrease: () => void;
+  onDecrease: () => void;
 };
 
 export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
   quantity,
-  setQuantity,
-  onAddToCart,
+  onIncrease,
+  onDecrease,
 }) => {
   return (
-    <View>
-      <View style={itemDetailModalStyles.quantitySelector}>
-        <Pressable
-          style={itemDetailModalStyles.quantityButton}
-          onPress={() => setQuantity(Math.max(1, quantity - 1))}
-        >
-          <Text style={itemDetailModalStyles.quantityButtonText}>-</Text>
-        </Pressable>
-        <Text style={itemDetailModalStyles.quantityText}>{quantity}</Text>
-        <Pressable
-          style={itemDetailModalStyles.quantityButton}
-          onPress={() => setQuantity(quantity + 1)}
-        >
-          <Text style={itemDetailModalStyles.quantityButtonText}>+</Text>
-        </Pressable>
-      </View>
+    <View style={[itemDetailModalStyles.quantitySelector, { marginTop: 20, marginBottom: 20 }]}>
       <Pressable
-        style={itemDetailModalStyles.nextButton}
-        onPress={onAddToCart}
+        style={itemDetailModalStyles.quantityButton}
+        onPress={onDecrease}
       >
-        <Text style={itemDetailModalStyles.nextText}>Next</Text>
+        <Text style={itemDetailModalStyles.quantityButtonText}>-</Text>
+      </Pressable>
+      
+      <Text style={itemDetailModalStyles.quantityText}>{quantity}</Text>
+      
+      <Pressable
+        style={itemDetailModalStyles.quantityButton}
+        onPress={onIncrease}
+      >
+        <Text style={itemDetailModalStyles.quantityButtonText}>+</Text>
       </Pressable>
     </View>
   );
