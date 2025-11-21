@@ -33,6 +33,11 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.surfaceAlt, // Light Blue
     borderRadius: theme.radii.xs,
   },
+  quantityActionText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000000', // Force Black
+  },
   quantityText: {
     marginHorizontal: 10,
     color: theme.colors.text,

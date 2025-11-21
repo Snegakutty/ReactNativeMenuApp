@@ -105,11 +105,11 @@ export const CartItemRow = ({ item, index, width }: Props) => {
                         style={[cartItemRowStyles.smallBtn, count === 0 && cartItemRowStyles.disabledBtn]}
                         disabled={count === 0}
                     >
-                      <Text>-</Text>
+                      <Text style={cartItemRowStyles.smallBtnText}>-</Text>
                     </Pressable>
                     <Text style={cartItemRowStyles.addonCount}>{count}</Text>
                     <Pressable onPress={() => handleAddonChange(addon, 'inc')} style={cartItemRowStyles.smallBtn}>
-                      <Text>+</Text>
+                      <Text style={cartItemRowStyles.smallBtnText}>+</Text>
                     </Pressable>
                     <Pressable onPress={() => handleAddonChange(addon, 'del')} style={cartItemRowStyles.delBtn}>
                       <Text style={cartItemRowStyles.delText}>×</Text>

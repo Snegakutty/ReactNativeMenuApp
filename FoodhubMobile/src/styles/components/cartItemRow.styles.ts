@@ -113,4 +113,10 @@ export const cartItemRowStyles = StyleSheet.create({
     color: theme.colors.muted,
     fontWeight: '300',
   },
+  smallBtnText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000000',
+    lineHeight: 18,   
+  }
 });
