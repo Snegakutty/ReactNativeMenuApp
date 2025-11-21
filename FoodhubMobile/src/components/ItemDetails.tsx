@@ -18,9 +18,7 @@ export const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
       <View style={itemDetailModalStyles.section}>
         <Text style={itemDetailModalStyles.sectionTitle}>Details</Text>
         <View style={itemDetailModalStyles.tags}>
-          
-          {/* FIX: Use ternary operators (? :) instead of && to avoid rendering '0' */}
-          
+         
           {item.veg_type ? (
             <Text style={itemDetailModalStyles.tag}>
               {item.veg_type.toUpperCase()}
