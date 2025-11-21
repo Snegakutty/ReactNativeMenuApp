@@ -62,11 +62,11 @@ export const CartItemRow = ({ item, index, width }: Props) => {
             <View style={cartItemRowStyles.controlsRight}>
                 <View style={cartScreenStyles.quantityContainer}>
                     <Pressable onPress={() => dispatch(decrementQuantity(item.id))} style={cartScreenStyles.quantityButton}>
-                        <Text>-</Text>
+                        <Text style={cartItemRowStyles.smallBtnText}>-</Text>
                     </Pressable>
                     <Text style={cartScreenStyles.quantityText}>{item.quantity}</Text>
                     <Pressable onPress={() => dispatch(incrementQuantity(item.id))} style={cartScreenStyles.quantityButton}>
-                        <Text>+</Text>
+                        <Text style={cartItemRowStyles.smallBtnText}>+</Text>
                     </Pressable>
                 </View>
                 <Pressable onPress={handleDelete} style={cartItemRowStyles.topDeleteBtn}>

@@ -6,7 +6,7 @@ import { CartIcon } from '../../components/CartIcon';
 export default function DashboardHeader() {
   return (
     <View style={localStyles.headerContainer}>
-      <Text style={dashboardStyles.heading}>FoodHub Menu</Text>
+      <Text style={dashboardStyles.heading}>Menu</Text>
       <CartIcon />
     </View>
   );
